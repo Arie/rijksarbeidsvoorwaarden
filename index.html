@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arbeidsvoorwaarden Rijksoverheid Vergelijken</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #01689b;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -.025em;
+      line-height: 1.2;
+      overflow-wrap: break-word;
+    }
+
+    h2 {
+      color: #01689b;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 1.25rem;
+    }
+
+    .subtitle {
+      color: #334155;
+      font-size: 1.125rem;
+      line-height: 1.7;
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+
+    .subtitle a {
+      color: #01689b;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .subtitle a:hover { color: #014e75; }
+
+    .input-section {
+      display: flex;
+      gap: 1.5rem;
+      background: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    label {
+      font-size: .8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: #475569;
+    }
+
+    select {
+      padding: .75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
+      appearance: auto;
+    }
+
+    select:hover { border-color: #01689b; }
+    select:focus { outline: none; border-color: #01689b; box-shadow: 0 0 0 3px rgba(1,104,155,.15); }
+
+    .section {
+      background: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section.final {
+      background: linear-gradient(135deg, #fff, #f1f5f9);
+      border-color: #01689b;
+      box-shadow: 0 4px 12px rgba(1,104,155,.1);
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: .875rem 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .result-item:last-child { border-bottom: none; }
+
+    .result-item.total {
+      border-top: 2px solid #e2e8f0;
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 1.125rem;
+      padding-top: 1rem;
+      margin-top: .25rem;
+    }
+
+    .result-item .label {
+      color: #475569;
+      font-size: .9375rem;
+    }
+
+    .result-item.total .label { color: #1e293b; }
+
+    .result-item .value {
+      font-weight: 700;
+      color: #01689b;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .big-value {
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    .big-value .amount {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #01689b;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .warning-note {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      color: #92400e;
+      font-size: .875rem;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    .footnotes {
+      background: #f8fafc;
+      border-left: 3px solid #01689b;
+      border-radius: 0 12px 12px 0;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .footnotes h2 { margin-bottom: 1rem; }
+
+    .footnotes ol {
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+
+    .footnotes li {
+      font-size: .875rem;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .footnotes a {
+      color: #01689b;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .footnotes a:hover { color: #014e75; }
+
+    .footnotes li:target {
+      background: #fef9c3;
+      border-radius: 4px;
+    }
+
+    a:has(.footnote-ref) {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    sup.footnote-ref {
+      color: #01689b;
+      font-weight: 600;
+      font-size: .75em;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .input-section { flex-direction: column; gap: 1rem; padding: 1.25rem; }
+      .section { padding: 1.25rem; }
+      .big-value .amount { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Arbeidsvoorwaarden Rijksoverheid Vergelijken</h1>
+    <p class="subtitle">
+      Bij de Rijksoverheid bestaat de beloning uit een aantal verschillende onderdelen.
+      Hierdoor is het lastig om de beloning te vergelijken met de marktsector.
+      Op deze pagina worden de onderdelen uitgerekend op basis van de
+      <a href="https://ambtenarensalaris.nl/wp-content/uploads/2024/07/CAORijk2024-2025per1juli2024-versievastgesteld27juni2024.pdf" target="_blank" rel="noopener">CAO Rijk 2024–2025</a>.
+    </p>
+
+    <div class="input-section">
+      <div class="input-group">
+        <label for="schaal">Schaal</label>
+        <select id="schaal"></select>
+      </div>
+      <div class="input-group">
+        <label for="trede">Trede</label>
+        <select id="trede"></select>
+      </div>
+      <div class="input-group">
+        <label for="uren">Uren</label>
+        <select id="uren">
+          <option value="27">27</option>
+          <option value="36" selected>36</option>
+          <option value="38">38</option>
+          <option value="40">40</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Maandbedrag CAO Rijk <span id="uren-label">(geschaald naar 36 uur)</span></h2>
+      <div class="big-value">
+        <span class="amount" id="maandbedrag">—</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Bruto jaarsalaris (incl. IKB)</h2>
+      <div class="result-item">
+        <span class="label">Bruto jaarsalaris</span>
+        <span class="value" id="bruto-jaar">—</span>
+      </div>
+      <div class="result-item">
+        <span class="label">Verplicht Eigen Inleg Pensioen<a href="#fn3"><sup class="footnote-ref">3</sup></a></span>
+        <span class="value" id="eigen-inleg-1">—</span>
+      </div>
+      <div class="result-item">
+        <span class="label">IKB<a href="#fn2"><sup class="footnote-ref">2</sup></a></span>
+        <span class="value" id="ikb">—</span>
+      </div>
+      <div class="result-item total">
+        <span class="label">Totaal</span>
+        <span class="value" id="bruto-totaal">—</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Pensioeninleg</h2>
+      <div class="result-item">
+        <span class="label">Verplicht Eigen Inleg Pensioen<a href="#fn3"><sup class="footnote-ref">3</sup></a></span>
+        <span class="value" id="eigen-inleg-2">—</span>
+      </div>
+      <div class="result-item">
+        <span class="label">Pensioeninleg Werkgever</span>
+        <span class="value" id="werkgever-pensioen">—</span>
+      </div>
+      <div class="result-item total">
+        <span class="label">Totaal</span>
+        <span class="value" id="pensioen-totaal">—</span>
+      </div>
+    </div>
+
+    <div class="section final">
+      <h2 id="totaal-heading">Totale beloning voor 36 uur per week</h2>
+      <div class="big-value">
+        <span class="amount" id="totale-beloning">—</span>
+      </div>
+    </div>
+
+    <div class="section" id="vijfdaagse-section">
+      <h2>Beloning geschaald naar 40 uur per week<a href="#fn1"><sup class="footnote-ref">1</sup></a></h2>
+      <div class="big-value">
+        <span class="amount" id="vijfdaagse">—</span>
+      </div>
+    </div>
+
+    <div class="warning-note" id="warning" style="display:none">
+      Voor inkomen boven de €137.000 gelden andere regels qua pensioenopbouw. De bovenstaande bedragen nemen dat niet mee.
+    </div>
+
+    <div class="footnotes">
+      <h2>Toelichting</h2>
+      <ol>
+        <li id="fn1">
+          Bij de Rijksoverheid zijn contracten doorgaans voor 36 uur per week.
+          Werknemers hebben recht op '4x9' werken (4 dagen x 9 uur).
+          Werknemers die 5x8 werken met een contract voor 36 uur bouwen
+          <a href="https://www.p-direkt.nl/informatie-rijkspersoneel-2020/vrije-dagen/vakantie/compensatie-uren/compensatie-uren-opbouwen" target="_blank" rel="noopener">compensatieverlof</a>
+          op, waardoor zij in totaal tot wel 11,5 weken per jaar verlof opbouwen.
+        </li>
+        <li id="fn2">
+          Het <a href="https://www.p-direkt.nl/informatie-rijkspersoneel-2020/financien/salaris/individueel-keuzebudget-ikb" target="_blank" rel="noopener">IKB</a>
+          is 16,5% van je bruto maandsalaris en kan je bijvoorbeeld gebruiken voor extra verlof of uitbetaling.
+        </li>
+        <li id="fn3">
+          27% van het totale salaris is pensioeninleg bij
+          <a href="https://www.abp.nl/pensioen-bij-abp/pensioenpremie-en-opbouw" target="_blank" rel="noopener">ABP</a>.
+          Twee-derde van de inleg is van de werkgever; een-derde is een verplichte eigen inleg uit het bruto salaris.
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const SALARY_TABLE = [
+      [2336.78,2376.79,2417.52,2458.95,2501.11,2544.00,2587.65,2632.06,2677.24,2723.22,2770.01],
+      [2458.95,2501.11,2544.00,2587.65,2632.06,2677.24,2723.22,2770.01,2817.61,2866.04,2915.32],
+      [2587.65,2632.06,2677.24,2723.22,2770.01,2817.61,2866.04,2915.32,2965.47,3016.50,3087.22],
+      [2677.24,2723.22,2770.01,2817.61,2866.04,2915.32,2965.47,3016.50,3087.22,3166.35,3246.16],
+      [2770.01,2817.61,2866.04,2915.32,2965.47,3016.50,3087.22,3166.35,3246.16,3325.28,3404.39],
+      [2866.04,2915.32,2965.47,3016.50,3087.22,3166.35,3246.16,3325.28,3404.39,3484.93,3564.01],
+      [3016.50,3087.22,3166.35,3246.16,3325.28,3404.39,3484.93,3564.01,3643.12,3753.46,3879.75],
+      [3246.16,3325.28,3404.39,3484.93,3564.01,3643.12,3753.46,3879.75,4024.11,4180.92,4340.57],
+      [3484.93,3564.01,3643.12,3753.46,3879.75,4024.11,4180.92,4340.57,4514.73,4691.71,4868.02],
+      [3404.39,3564.01,3753.46,4024.11,4340.57,4514.73,4691.71,4868.02,5035.94,5212.93,5389.87],
+      [4024.11,4340.57,4514.73,4691.71,4868.02,5035.94,5212.93,5389.87,5617.49,5864.55,6110.94],
+      [4691.71,4868.02,5035.94,5212.93,5389.87,5617.49,5864.55,6110.94,6373.26,6640.43,6907.67],
+      [5212.93,5389.87,5617.49,5864.55,6110.94,6373.26,6640.43,6907.67,7175.48,7457.71,7747.70],
+      [5864.55,6110.94,6373.26,6640.43,6907.67,7175.48,7457.71,7747.70,8012.72,8281.86,8550.40],
+      [6640.43,6907.67,7175.48,7457.71,7747.70,8012.72,8281.86,8550.40,8790.67,9042.33,9310.23],
+      [7457.71,7747.70,8012.72,8281.86,8550.40,8790.67,9042.33,9310.23,9573.19,9841.08,10133.92],
+      [8281.86,8550.40,8790.67,9042.33,9310.23,9573.19,9841.08,10133.92,10434.48,10735.89,11036.48],
+      [9042.33,9310.23,9573.19,9841.08,10133.92,10434.48,10735.89,11036.48,11364.41,11692.33,12021.01],
+      [9841.08,10133.92,10434.48,10735.89,11036.48,11364.41,11692.33,12021.01,12306.00,12590.23,12875.98],
+    ];
+
+    const IKB_RATE = 0.165;
+    const PENSION_TOTAL_RATE = 0.27;
+    const PENSION_EMPLOYEE_RATE = 0.081;
+    const PENSION_EMPLOYER_RATE = PENSION_TOTAL_RATE - PENSION_EMPLOYEE_RATE;
+    const PENSION_CAP = 137000;
+    const BASE_HOURS = 36;
+
+    const $schaal = document.getElementById("schaal");
+    const $trede = document.getElementById("trede");
+    const $uren = document.getElementById("uren");
+
+    // Populate dropdowns
+    for (let i = 0; i < 19; i++) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = i + 1;
+      $schaal.appendChild(opt);
+    }
+    for (let i = 0; i <= 10; i++) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = i;
+      $trede.appendChild(opt);
+    }
+
+    // Read URL params
+    function loadFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("schaal")) $schaal.value = Math.max(0, Math.min(18, Number(params.get("schaal")) - 1));
+      if (params.has("trede")) $trede.value = Math.max(0, Math.min(10, Number(params.get("trede"))));
+      if (params.has("uren")) {
+        const u = params.get("uren");
+        if (["27","36","38","40"].includes(u)) $uren.value = u;
+      }
+    }
+
+    function updateURL() {
+      const params = new URLSearchParams();
+      params.set("schaal", Number($schaal.value) + 1);
+      params.set("trede", $trede.value);
+      params.set("uren", $uren.value);
+      history.replaceState(null, "", "?" + params.toString());
+    }
+
+    function fmt(n) {
+      return "€" + Math.round(n).toLocaleString("nl-NL");
+    }
+
+    function calculate() {
+      const schaalIdx = Number($schaal.value);
+      const tredeIdx = Number($trede.value);
+      const uren = Number($uren.value);
+
+      const baseMaand = SALARY_TABLE[schaalIdx][tredeIdx];
+      const maand = baseMaand * (uren / BASE_HOURS);
+      const brutoJaar = maand * 12;
+      const eigenInleg = brutoJaar * PENSION_EMPLOYEE_RATE;
+      const ikb = brutoJaar * IKB_RATE;
+      const brutoTotaal = brutoJaar - eigenInleg + ikb;
+
+      const werkgeverPensioen = brutoJaar * PENSION_EMPLOYER_RATE;
+      const pensioenTotaal = eigenInleg + werkgeverPensioen;
+
+      const totaleBeloning = brutoTotaal + pensioenTotaal;
+      const veertiguur = totaleBeloning * 40 / uren;
+
+      // Update UI
+      document.getElementById("uren-label").textContent =
+        uren === 36 ? "" : "(geschaald naar " + uren + " uur)";
+      document.getElementById("maandbedrag").textContent = fmt(maand);
+      document.getElementById("bruto-jaar").textContent = fmt(brutoJaar);
+      document.getElementById("eigen-inleg-1").textContent = fmt(-eigenInleg);
+      document.getElementById("ikb").textContent = fmt(ikb);
+      document.getElementById("bruto-totaal").textContent = fmt(brutoTotaal);
+      document.getElementById("eigen-inleg-2").textContent = fmt(eigenInleg);
+      document.getElementById("werkgever-pensioen").textContent = fmt(werkgeverPensioen);
+      document.getElementById("pensioen-totaal").textContent = fmt(pensioenTotaal);
+      document.getElementById("totaal-heading").textContent =
+        "Totale beloning voor " + uren + " uur per week";
+      document.getElementById("totale-beloning").textContent = fmt(totaleBeloning);
+
+      const vijfdaagseSection = document.getElementById("vijfdaagse-section");
+      if (uren >= 40) {
+        vijfdaagseSection.style.display = "none";
+      } else {
+        vijfdaagseSection.style.display = "";
+        document.getElementById("vijfdaagse").textContent = fmt(veertiguur);
+      }
+
+      const warning = document.getElementById("warning");
+      warning.style.display = (brutoJaar + ikb) >= PENSION_CAP ? "block" : "none";
+
+      updateURL();
+    }
+
+    // Defaults: schaal 11 (index 10), trede 5, 36 uren
+    $schaal.value = 10;
+    $trede.value = 5;
+    $uren.value = "36";
+    loadFromURL();
+    calculate();
+
+    $schaal.addEventListener("change", calculate);
+    $trede.addEventListener("change", calculate);
+    $uren.addEventListener("change", calculate);
+  </script>
+</body>
+</html>
